@@ -31,11 +31,13 @@ conflicts=('uim' 'uim-svn')
 source=("git+https://github.com/uim/uim.git"
 		"git+https://github.com/uim/sigscheme.git"
 		"git+https://github.com/uim/libgcroots.git"
-		"0000-hidpi.patch")
+		"0000-hidpi.patch"
+        "0001-uim-skk-svn-utf8.patch")
 sha256sums=('SKIP'
             'SKIP'
             'SKIP'
-			'SKIP')
+			'SKIP'
+            'SKIP')
 
 pkgver() {
   cd "${srcdir}/${_pkgname}"
@@ -55,6 +57,7 @@ prepare() {
 
   cd "${srcdir}/${_pkgname}"
   patch -p1 < "${srcdir}/../0000-hidpi.patch"
+  patch -p1 < "${srcdir}/../0001-uim-skk-svn-utf8.patch"
 }
 
 build() {
