@@ -14,28 +14,30 @@ license=('custom:BSD')
 arch=('i686' 'x86_64')
 depends=('libxft' 'libedit')
 makedepends=('git' # for cloning
-			 'intltool' 'gettext' # core dependencies
-			 'gtk2' 'gtk3' 'qt5-tools' # frontend plugins
-			 'anthy' 'm17n-lib' # input method plugins
-			 'qt5-x11extras' # platform input context plugin
-			 'ruby') # generate functable-r5rs-syntax.c etc.
+             'intltool' 'gettext' # core dependencies
+             'gtk2' 'gtk3' 'qt5-tools' # frontend plugins
+             'anthy' 'm17n-lib' # input method plugins
+             'qt5-x11extras' # platform input context plugin
+             'ruby') # generate functable-r5rs-syntax.c etc.
 optdepends=('qt4: immodule and helper applications'
-			'qt5-x11extras: platform input context plugin'
+            'qt5-x11extras: platform input context plugin'
             'gtk2: immodule and helper applications'
             'gtk3: immodule and helper applications'
             'emacs: uim.el bridge software'
-			'm17n-lib: m17n support'
-			'anthy: Japanese input method')
+            'm17n-lib: m17n support'
+            'anthy: Japanese input method')
 provides=('uim')
 conflicts=('uim' 'uim-svn')
 source=("git+https://github.com/uim/uim.git"
-		"git+https://github.com/uim/sigscheme.git"
-		"git+https://github.com/uim/libgcroots.git"
-		"0000-hidpi.patch")
+        "git+https://github.com/uim/sigscheme.git"
+        "git+https://github.com/uim/libgcroots.git"
+        "0000-hidpi.patch"
+        "0001-skk-utf8.patch")
 sha256sums=('SKIP'
             'SKIP'
             'SKIP'
-			'SKIP')
+            'SKIP'
+            'SKIP')
 
 pkgver() {
   cd "${srcdir}/${_pkgname}"
@@ -55,6 +57,7 @@ prepare() {
 
   cd "${srcdir}/${_pkgname}"
   patch -p1 < "${srcdir}/../0000-hidpi.patch"
+  patch -p1 < "${srcdir}/../0001-skk-utf8.patch"
 }
 
 build() {
@@ -68,13 +71,13 @@ build() {
   ./autogen.sh
 
   cmd=(./configure
-	   --enable-maintainer-mode # necessary for building from Git
-	   --prefix=/usr
-	   --libexecdir=/usr/lib/uim
-	   --with-anthy-utf8
-	   --with-qt5-immodule
-	   --with-qt5
-	  )
+       --enable-maintainer-mode # necessary for building from Git
+       --prefix=/usr
+       --libexecdir=/usr/lib/uim
+       --with-anthy-utf8
+       --with-qt5-immodule
+       --with-qt5
+      )
   "${cmd[@]}"
 
   make
